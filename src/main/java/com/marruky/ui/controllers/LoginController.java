@@ -1,0 +1,60 @@
+package com.marruky.ui.controllers;
+
+import com.marruky.exception.AuthException;
+import com.marruky.exception.NotFoundException;
+import com.marruky.model.User;
+import com.marruky.model.person.Person;
+import com.marruky.repository.PersonRepository;
+import com.marruky.repository.UserRepository;
+import com.marruky.service.AuthService;
+import javafx.fxml.FXML;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+
+public class LoginController {
+
+    @FXML
+    private TextField usernameField;
+    @FXML
+    private PasswordField passwordField;
+    private final AuthService authService = new AuthService(new UserRepository());
+    @FXML
+    private Label errorLabel;
+
+    @FXML
+    private void handleLogin(){
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        try {
+            User user = authService.login(username, password);
+            Person person = new PersonRepository().findByUserId(user.getId());
+
+            FXMLLoader loader;
+
+            if(person.getType() == Person.Type.MANAGER || person.getType() == Person.Type.RECEPTIONIST) {
+                loader = new FXMLLoader(getClass().getResource("/views/staff.fxml"));
+            }else{
+                loader = new FXMLLoader(getClass().getResource("/views/client.fxml"));
+            }
+
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            stage.setScene(new Scene(loader.load()));
+        }catch (AuthException e){
+            errorLabel.setText(e.getMessage());
+        }catch (NotFoundException e){
+            errorLabel.setText("Username not found");
+        }catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+}
