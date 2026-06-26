@@ -3,6 +3,7 @@ package com.marruky.ui.controllers;
 import com.marruky.exception.AuthException;
 import com.marruky.exception.NotFoundException;
 import com.marruky.model.User;
+import com.marruky.model.person.Client;
 import com.marruky.model.person.Person;
 import com.marruky.repository.PersonRepository;
 import com.marruky.repository.UserRepository;
@@ -39,15 +40,22 @@ public class LoginController {
             Person person = new PersonRepository().findByUserId(user.getId());
 
             FXMLLoader loader;
+            Stage stage = (Stage) usernameField.getScene().getWindow();
 
             if(person.getType() == Person.Type.MANAGER || person.getType() == Person.Type.RECEPTIONIST) {
                 loader = new FXMLLoader(getClass().getResource("/views/staff.fxml"));
+                Scene scene = new Scene(loader.load());
+                StaffController controller = loader.getController();
+                controller.setCurrentPerson(person);
+                stage.setScene(scene);
             }else{
                 loader = new FXMLLoader(getClass().getResource("/views/client.fxml"));
+                Scene scene = new Scene(loader.load());
+                ClientController controller = loader.getController();
+                controller.setCurrentPerson(person);
+                stage.setScene(scene);
             }
 
-            Stage stage = (Stage) usernameField.getScene().getWindow();
-            stage.setScene(new Scene(loader.load()));
         }catch (AuthException e){
             errorLabel.setText(e.getMessage());
         }catch (NotFoundException e){
@@ -55,6 +63,5 @@ public class LoginController {
         }catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

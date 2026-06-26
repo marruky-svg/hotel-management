@@ -174,6 +174,7 @@ WHERE conrelid = 'reservations'::regclass
   AND conname = 'chk_reservations_state';
 
 SELECT * FROM reservations;
+SELECT * FROM people;
 
 INSERT INTO reservations (client_id, room_id, check_in_date, check_out_date, state)
 VALUES (1, 1, CURRENT_DATE, CURRENT_DATE + 2, 'CONFIRMED');

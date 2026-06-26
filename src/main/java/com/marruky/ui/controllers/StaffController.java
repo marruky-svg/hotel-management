@@ -1,6 +1,7 @@
 package com.marruky.ui.controllers;
 
 import com.marruky.model.Reservation;
+import com.marruky.model.person.Person;
 import com.marruky.model.room.Room;
 import com.marruky.repository.*;
 import com.marruky.service.InvoiceService;
@@ -30,6 +31,7 @@ public class StaffController {
     private final InvoiceRepository invoiceRepository = new InvoiceRepository();
     private final PersonRepository personRepository = new PersonRepository();
     private final InvoiceService invoiceService = new InvoiceService();
+    private Person currentPerson;
 
     @FXML
     private TableView<Reservation> reservationsTable;
@@ -278,17 +280,21 @@ public class StaffController {
             alert1.setTitle("Invoice");
             alert1.setContentText(
                     "Invoice of Reservation #" + selected.getId() + "\n" +
-                    "Total Rooms: " + String.format("%.2f", invoice.getTotalRooms()) + "€\n" +
+                            "Total Rooms: " + String.format("%.2f", invoice.getTotalRooms()) + "€\n" +
                             "Total Services: " + String.format("%.2f", invoice.getTotalServices()) + "€\n" +
                             "Discount: " + String.format("%.2f", invoice.getDiscount()) + "€\n" +
                             "Total Final: " + String.format("%.2f", invoice.getTotalFinal()) + "€"
             );
             alert1.showAndWait();
-        }else {
+        } else {
             alert.setTitle("Warning");
             alert.setContentText("Invoice doesn't exist");
             alert.showAndWait();
         }
+    }
+
+    public void setCurrentPerson(Person person) {
+        this.currentPerson = person;
     }
 
 }
