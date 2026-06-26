@@ -11,10 +11,6 @@ import java.io.IOException;
 public class ManagerController extends ReceptionistController{
 
 
-    @FXML
-    public void handleCreateRoom(){
-
-    }
 
     @FXML
     public void handleViewReports(){
@@ -30,6 +26,21 @@ public class ManagerController extends ReceptionistController{
             Stage stage = (Stage) reservationsTable.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void handleCreateRoom() {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/createRoom.fxml"));
+            Scene scene = new Scene(loader.load());
+            CreateRoomController controller = loader.getController();
+            controller.setCurrentPerson(currentPerson);
+            Stage stage = (Stage) reservationsTable.getScene().getWindow();
+            stage.setScene(scene);
+
+        }catch (IOException e){
             throw new RuntimeException(e);
         }
     }

@@ -199,4 +199,35 @@ public class PersonRepository {
             throw new DataBaseException(e.getMessage(), e);
         }
     }
+
+    public Client findClientById(int clientId) {
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT p.*, c.id AS client_id, c.loyalty_points, c.enterprise " +
+                             "FROM people p " +
+                             "INNER JOIN clients c ON c.person_id = p.id " +
+                             "WHERE c.id = ?")) {
+
+            stmt.setInt(1, clientId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Client(
+                        rs.getInt("client_id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("contact"),
+                        rs.getString("nif"),
+                        Person.Type.valueOf(rs.getString("type")),
+                        rs.getInt("loyalty_points"),
+                        rs.getString("enterprise")
+                );
+            }
+            throw new NotFoundException("Client not found");
+
+        } catch (SQLException e) {
+            throw new DataBaseException(e.getMessage(), e);
+        }
+    }
+
 }

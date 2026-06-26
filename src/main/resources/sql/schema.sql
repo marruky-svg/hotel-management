@@ -184,7 +184,9 @@ TRUNCATE TABLE services_reservations, invoices, payments,
     reservations, clients, staff, people,
     users, rooms, services RESTART IDENTITY CASCADE;
 
-SELECT u.username, p.name, p.type, s.position, s.shift
+
+SELECT u.username, p.name, p.type, c.loyalty_points
 FROM users u
          INNER JOIN people p ON p.user_id = u.id
-         INNER JOIN staff s ON s.person_id = p.id;
+         INNER JOIN clients c ON c.person_id = p.id
+WHERE u.username = 'mrky';

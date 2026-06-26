@@ -43,7 +43,7 @@ public class InvoiceService {
                 totalServices += reservationService.getService().calculatePrice(reservationService.getAmount());
             }
 
-            var client = new PersonRepository().findById(rs.getInt("client_id"));
+            var client = new PersonRepository().findClientById(rs.getInt("client_id"));
             double subtotal = totalRooms + totalServices;
             discount = subtotal * client.calculateDiscount();
             totalFinal = subtotal - discount;

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.marruky.ui.controllers.CreateRoomController"
+            fitToWidth="true"
+            prefHeight="600.0" prefWidth="400.0">
+
+    <content>
+        <VBox spacing="10" alignment="CENTER"
+              style="-fx-padding: 40;">
+
+            <Label text="Create Room" style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+
+            <Label text="Number"/>
+            <TextField fx:id="numberField"/>
+
+            <Label text="Type"/>
+            <ComboBox fx:id="typeComboBox"/>
+
+            <Label text="Night Price"/>
+            <TextField fx:id="nightPriceField"/>
+
+            <Label text="Capacity"/>
+            <TextField fx:id="capacityField"/>
+
+            <Label text="Floor"/>
+            <TextField fx:id="floorField"/>
+
+            <Label text="Description"/>
+            <TextField fx:id="descriptionField"/>
+
+            <Label fx:id="errorLabel" style="-fx-text-fill: red;"/>
+
+            <Button text="Create" onAction="#handleCreate" maxWidth="Infinity"/>
+            <Button text="Back"   onAction="#handleBack"   maxWidth="Infinity"/>
+
+        </VBox>
+    </content>
+
+</ScrollPane>

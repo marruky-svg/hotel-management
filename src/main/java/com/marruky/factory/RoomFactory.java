@@ -17,6 +17,17 @@ public class RoomFactory {
         int capacity = rs.getInt("capacity");
         boolean available = rs.getBoolean("available");
 
+        return getRoom(id, number, type, nightPrice, description, floor, capacity, available);
+    }
+
+    public static Room create(int id, String number, Room.Type type,
+                              double nightPrice, String description,
+                              int floor, int capacity, boolean available) {
+        return getRoom(id, number, type, nightPrice, description, floor, capacity, available);
+    }
+
+
+    private static Room getRoom(int id, String number, Room.Type type, double nightPrice, String description, int floor, int capacity, boolean available) {
         return switch (type){
             case SINGLE -> new SingleRoom(id, number, type,nightPrice, description, floor, capacity, available);
             case DOUBLE ->  new DoubleRoom(id, number, type,nightPrice, description, floor, capacity, available);
