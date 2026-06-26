@@ -5,25 +5,20 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 
-<?import javafx.scene.control.TableColumn?>
+
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.marruky.ui.controllers.StaffController"
+            fx:controller="com.marruky.ui.controllers.ManagerController"
             prefHeight="600.0" prefWidth="900.0">
 
-    <!-- Topo -->
     <top>
         <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
-            <Label text="Hotel Management — Staff" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+            <Label text="Hotel Management — Manager" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
         </HBox>
     </top>
 
-    <!-- Esquerda — botões -->
     <left>
         <VBox spacing="10" style="-fx-padding: 10;">
             <Button text="List Reservations" onAction="#handleListReservations" maxWidth="Infinity"/>
@@ -34,10 +29,12 @@
             <Button text="Issue Invoice" onAction="#handleIssueInvoice" maxWidth="Infinity"/>
             <Button text="View Invoice" onAction="#handleViewInvoice" maxWidth="Infinity"/>
             <Button text="Logout" onAction="#handleLogout" maxWidth="Infinity"/>
+            <Button text="Create Room" onAction="#handleCreateRoom" maxWidth="Infinity"/>
+            <Button text="Create Staff" onAction="#handleCreateStaff" maxWidth="Infinity"/>
+            <Button text="View Reports" onAction="#handleViewReports" maxWidth="Infinity"/>
         </VBox>
     </left>
 
-    <!-- Centro — tabela -->
     <center>
         <TableView fx:id="reservationsTable" style="-fx-padding: 10;">
             <columns>

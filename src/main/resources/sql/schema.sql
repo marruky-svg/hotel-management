@@ -183,3 +183,8 @@ VALUES (1, 1, CURRENT_DATE, CURRENT_DATE + 2, 'CONFIRMED');
 TRUNCATE TABLE services_reservations, invoices, payments,
     reservations, clients, staff, people,
     users, rooms, services RESTART IDENTITY CASCADE;
+
+SELECT u.username, p.name, p.type, s.position, s.shift
+FROM users u
+         INNER JOIN people p ON p.user_id = u.id
+         INNER JOIN staff s ON s.person_id = p.id;

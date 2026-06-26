@@ -35,7 +35,7 @@ public class RegisterController {
         try {
 
             AuthService authService = new AuthService(userRepository);
-            User user = authService.register(
+            User user = authService.registerClient(
                     usernameField.getText(),
                     passwordField.getText(),
                     nameField.getText(),

@@ -8,7 +8,6 @@ import com.marruky.model.Reservation;
 import com.marruky.model.User;
 import com.marruky.model.person.Client;
 import com.marruky.model.person.Person;
-import com.marruky.model.room.Room;
 import com.marruky.repository.*;
 import com.marruky.service.AuthService;
 
@@ -105,7 +104,7 @@ public class Menu {
                     System.out.print("Password: ");
                     password = scanner.nextLine();
                     try{
-                        user = auth.register(username, password, name, email, contact, nif);
+                        user = auth.registerClient(username, password, name, email, contact, nif);
                         notDone = false;
                     }catch (AuthException e){
                         System.out.print(e.getMessage());

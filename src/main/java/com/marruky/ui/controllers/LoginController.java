@@ -3,7 +3,6 @@ package com.marruky.ui.controllers;
 import com.marruky.exception.AuthException;
 import com.marruky.exception.NotFoundException;
 import com.marruky.model.User;
-import com.marruky.model.person.Client;
 import com.marruky.model.person.Person;
 import com.marruky.repository.PersonRepository;
 import com.marruky.repository.UserRepository;
@@ -22,13 +21,11 @@ import java.io.IOException;
 
 public class LoginController {
 
-    @FXML
-    private TextField usernameField;
-    @FXML
-    private PasswordField passwordField;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Label errorLabel;
+
     private final AuthService authService = new AuthService(new UserRepository());
-    @FXML
-    private Label errorLabel;
 
     @FXML
     private void handleLogin(){
@@ -42,13 +39,20 @@ public class LoginController {
             FXMLLoader loader;
             Stage stage = (Stage) usernameField.getScene().getWindow();
 
-            if(person.getType() == Person.Type.MANAGER || person.getType() == Person.Type.RECEPTIONIST) {
-                loader = new FXMLLoader(getClass().getResource("/views/staff.fxml"));
+            if(person.getType() == Person.Type.RECEPTIONIST) {
+                loader = new FXMLLoader(getClass().getResource("/views/receptionist.fxml"));
                 Scene scene = new Scene(loader.load());
-                StaffController controller = loader.getController();
+                ReceptionistController controller = loader.getController();
                 controller.setCurrentPerson(person);
                 stage.setScene(scene);
-            }else{
+            }else if(person.getType() == Person.Type.MANAGER) {
+                loader = new FXMLLoader(getClass().getResource("/views/manager.fxml"));
+                Scene scene = new Scene(loader.load());
+                ManagerController controller = loader.getController();
+                controller.setCurrentPerson(person);
+                stage.setScene(scene);
+            }
+            else{
                 loader = new FXMLLoader(getClass().getResource("/views/client.fxml"));
                 Scene scene = new Scene(loader.load());
                 ClientController controller = loader.getController();

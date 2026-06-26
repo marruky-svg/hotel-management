@@ -6,7 +6,7 @@ import com.marruky.exception.DataBaseException;
 import com.marruky.exception.NotFoundException;
 import com.marruky.model.User;
 import com.marruky.model.person.Person;
-import com.marruky.model.room.Room;
+import com.marruky.model.person.Staff;
 import com.marruky.repository.UserRepository;
 import com.marruky.util.PasswordUtil;
 
@@ -36,9 +36,8 @@ public class AuthService {
     }
 
 
-
-    public User register(String username, String password, String name, String email,
-                         String contact, String nif) {
+    public User registerClient(String username, String password, String name, String email,
+                               String contact, String nif) {
 
         try {
             userRepository.findByUsername(username);
@@ -87,8 +86,8 @@ public class AuthService {
 
                         return new User(userId, username, password, true, LocalDateTime.now());
 
-                    } catch (Exception e) {
 
+                    } catch (Exception e) {
                         throw new DataBaseException(e.getMessage(), e);
                     }
 
@@ -108,10 +107,103 @@ public class AuthService {
                 throw new DataBaseException(ex.getMessage(), ex);
             }
             throw new DataBaseException(e.getMessage(), e);
-        }finally {
+        } finally {
             try {
                 conn.setAutoCommit(true);
-            }catch (SQLException ex) {
+            } catch (SQLException ex) {
+                throw new DataBaseException(ex.getMessage(), ex);
+            }
+        }
+    }
+
+    public void registerStaff(String username, String password,
+                              String name, String email,
+                              String contact, String nif,
+                              String position, double salary,
+                              String shift, String type) {
+
+        try {
+            userRepository.findByUsername(username);
+            throw new AuthException("This username already exists");
+        } catch (NotFoundException ignored) {
+        }
+
+        Connection conn = DataBaseConnection.getConnection();
+
+        try {
+            conn.setAutoCommit(false);
+            try (PreparedStatement stmt = conn.prepareStatement("INSERT INTO users (username, password, active, created_at) VALUES(?,?,?,?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+                String hashedPassword = PasswordUtil.hash(password);
+
+                stmt.setString(1, username);
+                stmt.setString(2, hashedPassword);
+                stmt.setBoolean(3, true);
+                stmt.setDate(4, Date.valueOf(LocalDate.now()));
+                stmt.executeUpdate();
+
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (!rs.next()) {
+                    throw new DataBaseException("Couldn't register the staff");
+                }
+
+                int userId = rs.getInt(1);
+
+                try (PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO people (user_id, name, email, contact, nif, type, created_at) " +
+                        "VALUES (?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS)){
+
+                    stmt1.setInt(1, userId);
+                    stmt1.setString(2, name);
+                    stmt1.setString(3, email);
+                    stmt1.setString(4, contact);
+                    stmt1.setString(5, nif);
+                    stmt1.setString(6, type);
+                    stmt1.setDate(7, Date.valueOf(LocalDate.now()));
+                    stmt1.executeUpdate();
+
+                    ResultSet rs1 = stmt1.getGeneratedKeys();
+
+                    if(!rs1.next()){
+                        throw new DataBaseException("Couldn't register the staff");
+                    }
+                    int personId = rs1.getInt(1);
+
+                    try(PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO staff(person_id, position, salary, shift) " +
+                            "VALUES (?,?,?,?)")){
+
+                        stmt2.setInt(1, personId);
+                        stmt2.setString(2, position);
+                        stmt2.setDouble(3, salary);
+                        stmt2.setString(4, shift);
+                        stmt2.executeUpdate();
+                        conn.commit();
+
+                    }catch (SQLException e){
+                        throw new DataBaseException(e.getMessage(),e);
+                    }
+
+
+                }catch (SQLException e){
+                    throw new DataBaseException(e.getMessage(), e);
+                }
+
+            } catch (SQLException e) {
+                conn.close();
+                throw new DataBaseException(e.getMessage(), e);
+            }
+
+        } catch (Exception e) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                throw new DataBaseException(ex.getMessage(), ex);
+            }
+            throw new DataBaseException(e.getMessage(), e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
                 throw new DataBaseException(ex.getMessage(), ex);
             }
         }

@@ -22,31 +22,31 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 
-public class StaffController {
+public class ReceptionistController {
 
 
-    private final ReservationRepository reservationRepository = new ReservationRepository();
-    private final RoomRepository roomRepository = new RoomRepository();
-    private final ServiceRepository serviceRepository = new ServiceRepository();
-    private final InvoiceRepository invoiceRepository = new InvoiceRepository();
-    private final PersonRepository personRepository = new PersonRepository();
-    private final InvoiceService invoiceService = new InvoiceService();
-    private Person currentPerson;
+    protected final ReservationRepository reservationRepository = new ReservationRepository();
+    protected final RoomRepository roomRepository = new RoomRepository();
+    protected final ServiceRepository serviceRepository = new ServiceRepository();
+    protected final InvoiceRepository invoiceRepository = new InvoiceRepository();
+    protected final PersonRepository personRepository = new PersonRepository();
+    protected final InvoiceService invoiceService = new InvoiceService();
+    protected Person currentPerson;
 
     @FXML
-    private TableView<Reservation> reservationsTable;
+    protected TableView<Reservation> reservationsTable;
     @FXML
-    private TableColumn<Reservation, Integer> idColumn;
+    protected TableColumn<Reservation, Integer> idColumn;
     @FXML
-    private TableColumn<Reservation, Integer> clientIdColumn;
+    protected TableColumn<Reservation, Integer> clientIdColumn;
     @FXML
-    private TableColumn<Reservation, Integer> roomIdColumn;
+    protected TableColumn<Reservation, Integer> roomIdColumn;
     @FXML
-    private TableColumn<Reservation, String> checkInColumn;
+    protected TableColumn<Reservation, String> checkInColumn;
     @FXML
-    private TableColumn<Reservation, String> checkOutColumn;
+    protected TableColumn<Reservation, String> checkOutColumn;
     @FXML
-    private TableColumn<Reservation, String> stateColumn;
+    protected TableColumn<Reservation, String> stateColumn;
 
 
     @FXML
