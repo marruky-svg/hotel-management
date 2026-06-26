@@ -16,6 +16,7 @@
     <PasswordField fx:id="passwordField"/>
 
     <Button text="Login" onAction="#handleLogin"/>
+    <Button text="Register" onAction="#handleRegister"/>
 
     <Label fx:id="errorLabel" style="-fx-text-fill: red"/>
 

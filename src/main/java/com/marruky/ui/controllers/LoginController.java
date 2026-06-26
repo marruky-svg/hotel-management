@@ -64,4 +64,15 @@ public class LoginController {
             throw new RuntimeException(e);
         }
     }
+
+    @FXML
+    public void handleRegister() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/register.fxml"));
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            stage.setScene(new Scene(loader.load()));
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
 }
