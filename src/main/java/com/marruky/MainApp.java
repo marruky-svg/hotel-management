@@ -13,6 +13,9 @@ public class MainApp extends Application {
         Scene scene = new Scene(loader.load());
         stage.setTitle("Hotel Management System");
         stage.setScene(scene);
+        stage.setWidth(900);
+        stage.setHeight(600);
+        stage.setResizable(false);
         stage.show();
     }
 
